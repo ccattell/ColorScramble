@@ -3,7 +3,7 @@
     <groupId>me.ccattell.plugins.colorscramble</groupId>
     <artifactId>ColorScramble</artifactId>
     <version>0.1-alpha</version>
-    <name>ColorScramble</name>
+    <name>Color Scramble</name>
     <repositories>
         <repository>
             <id>bukkit-repo</id>
@@ -11,6 +11,8 @@
         </repository>
     </repositories>
     <build>
+        <directory>C:\minecraft\multicraft\servers\plugin_dev\plugins</directory>
+        <finalName>ColorScramble</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
