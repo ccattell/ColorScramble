@@ -1,7 +1,31 @@
 author: ccattell
-database: false
-generator: http://dinnerbone.com/minecraft/tools/pluginator/
+description: An extremely fun game
 main: me.ccattell.plugins.colorscramble.ColorScramble
 name: ColorScramble
 startup: postworld
 version: '1.0'
+
+permissions:
+  cs.admin:
+    description: Allow players to use the Color Scramble admin features.
+    default: op
+
+commands:
+  csadmin:
+    description: Accesses plugin admin features.
+    usage: /<command>
+    permission: cs.admin
+    permission-message: You don't have permission to use this command
+
+  csopen:
+    description: Opens an arena to players.
+    usage: /<command> [name]
+    permission: cs.admin
+    permission-message: You don't have permission to use this command
+
+  csclose:
+    description: Closes an arena to players.
+    usage: /<command> [name]
+    permission: cs.admin
+    permission-message: You don't have permission to use this command
+  
