@@ -24,7 +24,7 @@ public class ColorScrambleFloorBuilder {
         for (int ix = sx; ix < ex; ix++) {
             for (int iz = sz; iz < ez; iz++) {
                 w.getBlockAt(ix, 64, iz).setType(Material.ICE);
-                w.getBlockAt(ix, 65, iz).setType(Material.CARPET);
+                w.getBlockAt(ix, 65, iz).setTypeIdAndData(171, (byte) 0, true);
             }
         }
         System.out.println("Finished floor");

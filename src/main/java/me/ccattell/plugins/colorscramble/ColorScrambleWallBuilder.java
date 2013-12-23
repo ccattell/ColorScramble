@@ -4,7 +4,6 @@
 package me.ccattell.plugins.colorscramble;
 
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.World;
 
 /**
@@ -24,15 +23,15 @@ public class ColorScrambleWallBuilder {
         // build first and third walls
         for (int x1 = sx; x1 < ex; x1++) {
             for (int y1 = sy; y1 < ey; y1++) {
-                w.getBlockAt(x1, y1, sz).setType(Material.QUARTZ_BLOCK);
-                w.getBlockAt(x1, y1, ez).setType(Material.QUARTZ_BLOCK);
+                w.getBlockAt(x1, y1, sz).setTypeIdAndData(155, (byte) 0, true);
+                w.getBlockAt(x1, y1, ez).setTypeIdAndData(155, (byte) 0, true);
             }
         }
         // build second and fourth walls
         for (int z2 = sz; z2 < ez; z2++) {
             for (int y2 = sy; y2 < ey; y2++) {
-                w.getBlockAt(sx, y2, z2).setType(Material.QUARTZ_BLOCK);
-                w.getBlockAt(ex, y2, z2).setType(Material.QUARTZ_BLOCK);
+                w.getBlockAt(sx, y2, z2).setTypeIdAndData(155, (byte) 0, true);
+                w.getBlockAt(ex, y2, z2).setTypeIdAndData(155, (byte) 0, true);
             }
         }
         System.out.println("Finished walls");

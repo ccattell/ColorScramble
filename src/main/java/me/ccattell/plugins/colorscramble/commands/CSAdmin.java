@@ -12,7 +12,6 @@ import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedCuboidRegion;
 import java.util.HashMap;
 import me.ccattell.plugins.colorscramble.ColorScramble;
-import me.ccattell.plugins.colorscramble.ColorScrambleCarpetLayer;
 import me.ccattell.plugins.colorscramble.ColorScrambleClearArea;
 import me.ccattell.plugins.colorscramble.ColorScrambleFloorBuilder;
 import me.ccattell.plugins.colorscramble.ColorScrambleWallBuilder;
@@ -32,7 +31,7 @@ import org.bukkit.entity.Player;
  */
 public class CSAdmin implements CommandExecutor {
 
-    private ColorScramble plugin;
+    private final ColorScramble plugin;
     public String moduleName = ChatColor.GREEN + "[Color Scramble]" + ChatColor.RESET + " ";
 
     public CSAdmin(ColorScramble plugin) {
@@ -53,7 +52,7 @@ public class CSAdmin implements CommandExecutor {
                 sender.sendMessage(moduleName + "You don't have permission to use that command!");
                 return true;
             }
-            Location l = player.getLocation();
+            final Location l = player.getLocation();
             World world = l.getWorld();
             Chunk chunk = l.getChunk();
             int chunkx = chunk.getX();
@@ -65,12 +64,11 @@ public class CSAdmin implements CommandExecutor {
             int ex = chunkend.getBlock(15, 0, 15).getX();
             int ez = chunkend.getBlock(15, 0, 15).getZ();
             final Location one = new Location(world, sx, 0, sz);
-            final Location two = new Location(world, ex, 110, ez);
+            final Location two = new Location(world, ex, 128, ez);
             addWGProtection(player, one, two);
             // set the player flying
             player.setAllowFlight(true);
             player.setFlying(true);
-            l.setY(65D);
             // hollow out 3x3 chunk area and set quartz block walls at arena boundaries from y0 to y110, then place white carpet covered ice at y64 and create a world guard region
             // ~ 1 second
             //Building the walls first stops water and lava from flowing into the region
@@ -80,14 +78,8 @@ public class CSAdmin implements CommandExecutor {
                     System.out.println("Starting walls...");
                     // build the walls
                     new ColorScrambleWallBuilder().build(one, two);
-                    sender.sendMessage(moduleName + "Clearing the area...");
-                    System.out.println("Starting clearing...");
-                    new ColorScrambleClearArea().clear(one, two);
                 }
             }, 10L);
-            //player teleport should be after clear task, to avoid suffocation damage
-            player.teleport(l);
-           // floor building takes about 10-12 seconds here still slow
             Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
                 public void run() {
                     sender.sendMessage(moduleName + "Building the floor...");
@@ -95,7 +87,22 @@ public class CSAdmin implements CommandExecutor {
                     // build the floor
                     new ColorScrambleFloorBuilder().build(one, two);
                 }
-            }, 210L);
+            }, 20L);
+            Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+                public void run() {
+                    sender.sendMessage(moduleName + "Clearing the area...");
+                    System.out.println("Starting clearing...");
+                    new ColorScrambleClearArea().clear(one);
+                }
+            }, 30L);
+            //player teleport should be after clear task, to avoid suffocation damage
+            Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+                public void run() {
+                    l.setY(65D);
+                    player.teleport(l);
+                    player.setFlying(false);
+                }
+            }, 60L);
         }
         return true;
     }
@@ -112,7 +119,7 @@ public class CSAdmin implements CommandExecutor {
         RegionManager rm = wg.getRegionManager(one.getWorld());
         BlockVector b1 = makeBlockVector(one);
         BlockVector b2 = makeBlockVector(two);
-        ProtectedCuboidRegion region = new ProtectedCuboidRegion("", b1, b2);
+        ProtectedCuboidRegion region = new ProtectedCuboidRegion("ColorScramble", b1, b2);
         DefaultDomain dd = new DefaultDomain();
         dd.addPlayer(p.getName());
         region.setOwners(dd);
