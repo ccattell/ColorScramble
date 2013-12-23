@@ -13,14 +13,19 @@ import org.bukkit.World;
  */
 public class ColorScrambleClearArea {
 
-    public void clear(Location one) {
+    public void clear(Location one, Location two) {
         World w = one.getWorld();
         int sx = one.getBlockX() + 1;
+        int sy = one.getBlockY();
         int sz = one.getBlockZ() + 1;
+        int ex = two.getBlockX();
+        int ey = two.getBlockY();
+        int ez = two.getBlockZ();
+
         // clear the area
-        for (int x = sx; x < (sx + 46); x++) {
-            for (int z = sz; z < (sz + 46); z++) {
-                for (int y = 0; y < 74; y++) {
+        for (int x = sx; x < ex; x++) {
+            for (int z = sz; z < ez; z++) {
+                for (int y = sy; y < ey; y++) {
                     w.getBlockAt(x, y, z).setType(Material.AIR);
                 }
             }

@@ -65,59 +65,37 @@ public class CSAdmin implements CommandExecutor {
             int ex = chunkend.getBlock(15, 0, 15).getX();
             int ez = chunkend.getBlock(15, 0, 15).getZ();
             final Location one = new Location(world, sx, 0, sz);
-            final Location two = new Location(world, ex, 74, ez);
+            final Location two = new Location(world, ex, 110, ez);
             addWGProtection(player, one, two);
             // set the player flying
             player.setAllowFlight(true);
             player.setFlying(true);
             l.setY(65D);
-            player.teleport(l);
-            // hollow out 3x3 chunk area and set quartz block walls at arena boundaries from y0 to y74, then place white carpet covered ice at y64 and create a world guard region
+            // hollow out 3x3 chunk area and set quartz block walls at arena boundaries from y0 to y110, then place white carpet covered ice at y64 and create a world guard region
             // ~ 1 second
-            Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-                public void run() {
-                    sender.sendMessage(moduleName + "Clearing the area...");
-                    System.out.println("Starting clearing...");
-                    new ColorScrambleClearArea().clear(one);
-                }
-            }, 10L);
-            // floor building takes about 10-12 seconds here still slow
-            Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-                public void run() {
-                    sender.sendMessage(moduleName + "Building the floor...");
-                    System.out.println("Starting floor...");
-                    // build the floor
-                    new ColorScrambleFloorBuilder().build(one);
-                }
-            }, 110L);
-            // ~ 1 second, longer if floor building comes first
+            //Building the walls first stops water and lava from flowing into the region
             Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
                 public void run() {
                     sender.sendMessage(moduleName + "Building the walls...");
                     System.out.println("Starting walls...");
                     // build the walls
                     new ColorScrambleWallBuilder().build(one, two);
+                    sender.sendMessage(moduleName + "Clearing the area...");
+                    System.out.println("Starting clearing...");
+                    new ColorScrambleClearArea().clear(one, two);
                 }
-            }, 210L);
-            // if floor building is here it takes 27 seconds and the client times out! Why?
-//            Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
-//                public void run() {
-//                    sender.sendMessage(moduleName + "Building the floor...");
-//                    System.out.println("Starting floor...");
-//                    // build the floor
-//                    new ColorScrambleFloorBuilder().build(one);
-//                }
-//            }, 130L);
-            // less than a second
+            }, 10L);
+            //player teleport should be after clear task, to avoid suffocation damage
+            player.teleport(l);
+           // floor building takes about 10-12 seconds here still slow
             Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
                 public void run() {
-                    sender.sendMessage(moduleName + "Laying the carpet...");
-                    System.out.println("Starting carpet...");
+                    sender.sendMessage(moduleName + "Building the floor...");
+                    System.out.println("Starting floor...");
                     // build the floor
-                    new ColorScrambleCarpetLayer().lay(one);
-                    player.setFlying(false);
+                    new ColorScrambleFloorBuilder().build(one, two);
                 }
-            }, 310L);
+            }, 210L);
         }
         return true;
     }
