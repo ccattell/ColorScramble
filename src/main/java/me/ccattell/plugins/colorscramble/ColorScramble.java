@@ -7,17 +7,19 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class ColorScramble extends JavaPlugin implements Listener {
+
+    @Override
     public void onDisable() {
         // TODO: Place any custom disable code here.
     }
 
+    @Override
     public void onEnable() {
         getServer().getPluginManager().registerEvents(this, this);
-        getCommand("csadmin").setExecutor(new CSAdmin());
+        getCommand("csadmin").setExecutor(new CSAdmin(this));
     }
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
     }
 }
-
