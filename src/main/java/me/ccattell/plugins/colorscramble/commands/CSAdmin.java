@@ -115,6 +115,7 @@ public class CSAdmin implements CommandExecutor {
                     System.out.println("Starting carpet...");
                     // build the floor
                     new ColorScrambleCarpetLayer().lay(one);
+                    player.setFlying(false);
                 }
             }, 310L);
         }
