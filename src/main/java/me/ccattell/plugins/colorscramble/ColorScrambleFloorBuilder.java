@@ -23,8 +23,11 @@ public class ColorScrambleFloorBuilder {
         // build ice floor
         for (int ix = sx; ix < ex; ix++) {
             for (int iz = sz; iz < ez; iz++) {
+                w.getBlockAt(ix, 66, iz).setType(Material.ICE);
                 w.getBlockAt(ix, 64, iz).setType(Material.ICE);
                 w.getBlockAt(ix, 65, iz).setTypeIdAndData(171, (byte) 0, true);
+                w.getBlockAt(ix, 110, iz).setTypeIdAndData(155, (byte) 0, true);
+                w.getBlockAt(ix, 100, iz).setType(Material.GLASS);
             }
         }
         System.out.println("Finished floor");

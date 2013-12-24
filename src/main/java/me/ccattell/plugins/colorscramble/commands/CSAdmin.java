@@ -92,7 +92,7 @@ public class CSAdmin implements CommandExecutor {
                 public void run() {
                     sender.sendMessage(moduleName + "Clearing the area...");
                     System.out.println("Starting clearing...");
-                    new ColorScrambleClearArea().clear(one);
+                    new ColorScrambleClearArea().clear(one, two);
                 }
             }, 30L);
             //player teleport should be after clear task, to avoid suffocation damage
